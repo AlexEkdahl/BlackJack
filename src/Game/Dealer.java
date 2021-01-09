@@ -23,27 +23,36 @@ public class Dealer extends Person {
       return this.table;
    }
 
-   public ArrayList<Person> getPlayers(){
+   public ArrayList<Person> getPlayers() {
       return this.table.getPlayers();
    }
 
    // Give everyone at the table a card and removes it from deck
-   //TOOO for loop to see card insted of blank
    public void dealOneCard() {
       for (Person player : table.getPlayers()) {
          // check if player should get a card
          if (player.getNewCard() && !player.isBust()) {
-            player.getOneCard(this.deck.giveOneCard());
-            System.out.println(player.getName() + " got a card");
+            player.getOneCard(deck.giveOneCard());
+            System.out.println(player.getName() + " got " + deck.giveOneCard().toString());
             this.deck.removeOneCard();
+
+            // "Sleeps" the terminal for 800ms
+            // Just for making the game feel a bit more interactive
+            try {
+               Thread.sleep(800);
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
          }
       }
+      System.out.println();
    }
 
-   // choice of either take a new card och stay
+   // choice of either take a new card or stay
    public void checkHitOrStand() {
       for (Person player : table.getPlayers()) {
-         // users choice
+
+         // Branches of to check if its a object of Player and wants a new card
          if (player.getClass() == Player.class && player.getNewCard()) {
             System.out.println("\nNew card or stay?" + "[Y / N]");
             String answer = input.nextLine().toLowerCase();
@@ -54,25 +63,25 @@ public class Dealer extends Person {
                   break;
                case "n":
                   player.setGetNewCard(false);
-                  // debugg
                   System.out.println(player.getName() + "choose to stay");
                   break;
                default:
                   System.out.println("Wrong input");
                   break;
             }
+            // Branches of to check if its a object of Computer
+            // This computer will stop if at 18 or above, more risk taking then the dealer
          } else if (player.getClass() == Computer.class && player.getNewCard()) {
             if (player.getSum() >= 18) {
                player.setGetNewCard(false);
                // debugg
                System.out.println(player.getName() + "choose to stay");
-               System.out.println(player.getName() + " " + player.getNewCard());
-
             } else {
                player.setGetNewCard(true);
                System.out.println(player.getName() + " said, hit me!");
             }
-            // In black jack, the dealer stop at 17.
+            // Branches of to check if its a object of dealer
+            // In black jack, the dealer stop when at 17 or above
          } else if (player.getClass() == Dealer.class && player.getNewCard()) {
             if (player.getSum() >= 17) {
                player.setGetNewCard(false);
@@ -100,24 +109,31 @@ public class Dealer extends Person {
       for (Person player : table.getPlayers()) {
          if (player.getSum() == 21) {
             System.out.println(player.getName() + " won");
-            // TODO player get money
+            printPlayersCards();
             return true;
          } else if (player.getClass() == Dealer.class && player.isBust()) {
-            // TODO betters split(?) get money
             System.out.println("Dealer is bust!");
+            printPlayersCards();
             return true;
          } else if (breakGame()) {
             System.out.println("breakgame");
             return true;
          }
-
       }
       return false;
-
    }
 
-   // check if all players.getNewCard == false
-   // or all players.isBust == true // check if all players is eit
+   public void printPlayersCards() {
+      for (Person player : getPlayers()) {
+         System.out.println("\n" + player.getName());
+         System.out.println(player.showCards());
+      }
+   }
+
+   // check if all players getNewCard is set to false
+   // or if they are bust. Return a boolean if that is so
+   // if count equals the amount of player then there are no moves left
+
    public boolean breakGame() {
       int count = 0;
       for (Person player : this.table.getPlayers()) {
@@ -125,13 +141,10 @@ public class Dealer extends Person {
             count++;
          }
       }
+      // if count equals the amount of player
       if (count == this.table.getPlayers().size()) {
          return true;
       }
       return false;
    }
-
-   // TODO a method to check is someone got 21, if dealer bets players or player
-   // beat dealer
-   // note can only check of everyone is either stayed or busted
 }
