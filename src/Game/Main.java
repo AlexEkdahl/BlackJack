@@ -7,9 +7,9 @@ public class Main {
 
         // initializing  
         ArrayList<Person> players = new ArrayList<>();
-        Player player1 = new Player("Alex");
+        Player player1 = new Player("Alex the Champ");
         Computer player2 = new Computer("Linda");
-        Computer player3 = new Computer("Martin");
+        Computer player3 = new Computer("Martin ");
         players.add(player1);
         players.add(player2);
         players.add(player3);
@@ -20,6 +20,7 @@ public class Main {
         // [First round]
         dealer.dealOneCard();
         dealer.dealOneCard();
+        dealer.checkIfBust();
         // [end of first round]
 
         // Black Jack Game

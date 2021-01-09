@@ -6,8 +6,8 @@ public class Person {
 
    private ArrayList<Card> playersCards;
    private String name;
-   private boolean bust = false;
-   private boolean getNewCard = true;
+   private boolean isBust = false;
+   private boolean getCard = true;
    private int sum;
 
    public Person(String name) {
@@ -23,12 +23,12 @@ public class Person {
       this.sum = sum;
    }
 
-   public void setGetNewCard(boolean getNewCard) {
-      this.getNewCard = getNewCard;
+   public void setGetCard(boolean getCard) {
+      this.getCard = getCard;
    }
 
-   public boolean getNewCard() {
-      return this.getNewCard;
+   public boolean getCard() {
+      return this.getCard;
    }
 
    public void setName(String name) {
@@ -36,11 +36,11 @@ public class Person {
    }
 
    public boolean isBust() {
-      return this.bust;
+      return this.isBust;
    }
 
-   public void setBust(boolean bust) {
-      this.bust = bust;
+   public void setBust(boolean isBust) {
+      this.isBust = isBust;
    }
 
    public String getName() {
