@@ -28,6 +28,6 @@ public class Card {
 
    // debugging
    public String toString() {
-      return "\n" + value + " of " + suit;
+      return value + " of " + suit;
    }
 }

@@ -29,7 +29,6 @@ public class Person {
 
    public boolean getNewCard() {
       return this.getNewCard;
-
    }
 
    public void setName(String name) {

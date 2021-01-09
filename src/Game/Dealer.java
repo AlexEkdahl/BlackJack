@@ -23,21 +23,29 @@ public class Dealer extends Person {
       return this.table;
    }
 
-   public ArrayList<Person> getPlayers(){
+   public ArrayList<Person> getPlayers() {
       return this.table.getPlayers();
    }
 
    // Give everyone at the table a card and removes it from deck
-   //TOOO for loop to see card insted of blank
    public void dealOneCard() {
       for (Person player : table.getPlayers()) {
          // check if player should get a card
          if (player.getNewCard() && !player.isBust()) {
-            player.getOneCard(this.deck.giveOneCard());
-            System.out.println(player.getName() + " got a card");
+            player.getOneCard(deck.giveOneCard());
+            System.out.println(player.getName() + " got " + deck.giveOneCard().toString());
             this.deck.removeOneCard();
+
+            // "Sleeps" the terminal for 800ms
+            // Just for making the game feel a bit more interactive
+            try {
+               Thread.sleep(800);
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
          }
       }
+      System.out.println();
    }
 
    // choice of either take a new card och stay
@@ -54,7 +62,6 @@ public class Dealer extends Person {
                   break;
                case "n":
                   player.setGetNewCard(false);
-                  // debugg
                   System.out.println(player.getName() + "choose to stay");
                   break;
                default:
@@ -66,8 +73,6 @@ public class Dealer extends Person {
                player.setGetNewCard(false);
                // debugg
                System.out.println(player.getName() + "choose to stay");
-               System.out.println(player.getName() + " " + player.getNewCard());
-
             } else {
                player.setGetNewCard(true);
                System.out.println(player.getName() + " said, hit me!");
@@ -100,11 +105,14 @@ public class Dealer extends Person {
       for (Person player : table.getPlayers()) {
          if (player.getSum() == 21) {
             System.out.println(player.getName() + " won");
+            printPlayersCards();
+
             // TODO player get money
             return true;
          } else if (player.getClass() == Dealer.class && player.isBust()) {
             // TODO betters split(?) get money
             System.out.println("Dealer is bust!");
+            printPlayersCards();
             return true;
          } else if (breakGame()) {
             System.out.println("breakgame");
@@ -114,6 +122,18 @@ public class Dealer extends Person {
       }
       return false;
 
+   }
+
+   public void printPlayersCards() {
+      for (Person player : getPlayers()) {
+         if (player.getClass() == Dealer.class) {
+            System.out.println("\n" + player.getName());
+            System.out.println(player.showCards());
+         } else {
+            System.out.println("\n" + player.getName());
+            System.out.println(player.showCards());
+         }
+      }
    }
 
    // check if all players.getNewCard == false
