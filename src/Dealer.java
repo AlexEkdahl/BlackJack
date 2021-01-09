@@ -26,7 +26,10 @@ public class Dealer extends Person {
       for (Person player : table.getPlayers()) {
          // check if player should get a card
          if (player.getNewCard() && !player.isBust())
+
             player.getOneCard(this.deck.giveOneCard());
+
+            //why does this statement print out
             System.out.println(player.getName() + " got a card");
          this.deck.removeOneCard();
       }
@@ -37,13 +40,11 @@ public class Dealer extends Person {
       for (Person player : table.getPlayers()) {
          // users choice
          if (player.getClass() == Player.class && player.getNewCard()) {
-            System.out.println("\n New card or stay?" + "[Y / N]");
+            System.out.println("\nNew card or stay?" + "[Y / N]");
             String answer = input.nextLine().toLowerCase();
             switch (answer) {
                case "y":
                   player.setGetNewCard(true);
-                  // debugg
-                  System.out.println("Who was here at get new card: " + player.getName());
                   break;
                case "n":
                   player.setGetNewCard(false);
@@ -55,20 +56,26 @@ public class Dealer extends Person {
                   break;
             }
             // The computer is bold and like to take risk
-         } else if (player.getClass() == Computer.class && player.getNewCard()) {
+         } 
+         if (player.getClass() == Computer.class && player.getNewCard()) {
             if (player.getSum() >= 18) {
                player.setGetNewCard(false);
                // debugg
                System.out.println(player.getName()+ "choose to stay");
+               System.out.println(player.getName() + " " + player.getNewCard());
+
             } else {
                player.setGetNewCard(true);
             }
             // In black jack, the dealer stop at 17.
-         } else if (player.getClass() == Dealer.class && player.getNewCard()) {
+         } 
+         if (player.getClass() == Dealer.class && player.getNewCard()) {
             if (player.getSum() >= 17) {
                player.setGetNewCard(false);
                // debugg
                System.out.println(player.getName() + "choose to stay");
+               System.out.println(player.getName() + " " + player.getNewCard());
+
             } else {
                player.setGetNewCard(true);
             }

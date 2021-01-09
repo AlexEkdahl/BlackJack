@@ -45,6 +45,7 @@ public class Main {
         // Loop starts
         while (!dealer.isAWinner()) {
             for (Person player : dealer.getTable().getPlayers()) {
+                
                 if (player.getClass() == Player.class) {
                     System.out.println("\n" + player.getName());
                     System.out.println(player.showCards());
