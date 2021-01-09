@@ -58,8 +58,7 @@ public class Person {
       this.sum += card.getValue();
    }
 
-   //WAIT
-
+   // get all of the players card, shown visible;
    public String showCards(){
       String returnString = "";
       for(Card card: playersCards){

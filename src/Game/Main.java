@@ -20,7 +20,7 @@ public class Main {
 
         // [First round]
         dealer.dealOneCard();
-        for (Person player : dealer.getTable().getPlayers()) {
+        for (Person player : dealer.getPlayers()) {
             System.out.println(player.getName() + ", got first card");
             //Dont know why there has to be a try-catch
             //"pauses" the print in terminal to make it look more interactive
@@ -31,7 +31,7 @@ public class Main {
             }
         }
         dealer.dealOneCard();
-        for (Person player : dealer.getTable().getPlayers()) {
+        for (Person player : dealer.getPlayers()) {
             System.out.println(player.getName() + ", got second card");
             //Dont know why there has to be a try-catch
             //"pauses" the print in terminal to make it look more interactive
@@ -46,15 +46,14 @@ public class Main {
         // TODO finish method to check for winner
         // Loop starts
         while (!dealer.isAWinner()) {
-            for (Person player : dealer.getTable().getPlayers()) {
-                
-                if (player.getClass() == Player.class) {
+            for (Person player : dealer.getPlayers()) {
+
+                if (player.getClass() == Dealer.class) {
                     System.out.println("\n" + player.getName());
                     System.out.println(player.showCards());
-                } else if (player.getClass() == Dealer.class) {
-                    //TODO somethings wrong, there is a /n between name and value
+                } else {
                     System.out.println("\n" + player.getName());
-                    System.out.println(player.getCardList().get(0));
+                    System.out.println(player.showCards());
                 }
             }
             // check if someone is bust and dont give any more cards
