@@ -7,16 +7,16 @@ public class Main {
         ArrayList<Person> players = new ArrayList<>();
         Player player1 = new Player("Alex");
         Computer player2 = new Computer("Linda");
-
+        Computer player3 = new Computer("Martin");
         players.add(player1);
         players.add(player2);
-
+        players.add(player3);
         Dealer dealer = new Dealer("Svarte Petter", players);
 
         //TODO place bets
 
 
-        // First round
+        // [First round]
         dealer.dealOneCard();
         for (Person player : dealer.getTable().getPlayers()) {
             System.out.println(player.getName() + ", got first card");
@@ -39,7 +39,7 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        // end of first round
+        // [end of first round]
 
         // TODO finish method to check for winner
         // Loop starts
@@ -47,7 +47,6 @@ public class Main {
             for (Person player : dealer.getTable().getPlayers()) {
                 if (player.getClass() == Player.class) {
                     System.out.println("\n" + player.getName());
-
                     System.out.println(player.showCards());
                 } else if (player.getClass() == Dealer.class) {
                     //TODO somethings wrong, there is a /n between name and value
