@@ -35,14 +35,7 @@ public class Dealer extends Person {
             player.getOneCard(deck.giveOneCard());
             System.out.println(player.getName() + " got " + deck.giveOneCard().toString());
             this.deck.removeOneCard();
-
-            // "Sleeps" the terminal for 800ms
-            // Just for making the game feel a bit more interactive
-            try {
-               Thread.sleep(800);
-            } catch (InterruptedException e) {
-               e.printStackTrace();
-            }
+            waitMilliSeconds(700);
          }
       }
       System.out.println();
@@ -60,10 +53,14 @@ public class Dealer extends Person {
                case "y":
                   player.setGetNewCard(true);
                   System.out.println(player.getName() + " said, hit me!");
+                  waitMilliSeconds(500);
+
                   break;
                case "n":
                   player.setGetNewCard(false);
                   System.out.println(player.getName() + "choose to stay");
+                  waitMilliSeconds(500);
+
                   break;
                default:
                   System.out.println("Wrong input");
@@ -75,21 +72,31 @@ public class Dealer extends Person {
             if (player.getSum() >= 18) {
                player.setGetNewCard(false);
                // debugg
-               System.out.println(player.getName() + "choose to stay");
+               System.out.println(player.getName() + " choose to stay");
+               waitMilliSeconds(500);
+
             } else {
                player.setGetNewCard(true);
                System.out.println(player.getName() + " said, hit me!");
+               waitMilliSeconds(500);
+
             }
             // Branches of to check if its a object of dealer
             // In black jack, the dealer stop when at 17 or above
+
+            // TODO fix so that dealer must play if a player has a better score then they
          } else if (player.getClass() == Dealer.class && player.getNewCard()) {
             if (player.getSum() >= 17) {
                player.setGetNewCard(false);
                // debugg
-               System.out.println(player.getName() + "must stop");
+               System.out.println(player.getName() + " must stop");
+               waitMilliSeconds(500);
+
             } else {
                player.setGetNewCard(true);
                System.out.println(player.getName() + " have to continue");
+               waitMilliSeconds(500);
+
             }
          }
       }
@@ -99,23 +106,39 @@ public class Dealer extends Person {
    public void checkIfBust() {
       for (Person player : table.getPlayers()) {
          if (player.getSum() > 21) {
-            System.out.println(player.getName() + "You're bust");
+            System.out.println(player.getName() + " got bust and is out");
             player.setBust(true);
          }
       }
    }
 
+   // "Sleeps" the terminal for 800ms
+   // Just for making the game feel a bit more interactive
+   public void waitMilliSeconds(int ms) {
+      try {
+         Thread.sleep(ms);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+   }
+
    public boolean isAWinner() {
       for (Person player : table.getPlayers()) {
+
+         // TODO check if another player got 21
+         // and if the dealer got aswell, then dealer win
          if (player.getSum() == 21) {
             System.out.println(player.getName() + " won");
             printPlayersCards();
             return true;
          } else if (player.getClass() == Dealer.class && player.isBust()) {
+            // TODO check who is not bust, they are the winner.
             System.out.println("Dealer is bust!");
             printPlayersCards();
             return true;
          } else if (breakGame()) {
+            // TODO
+
             System.out.println("breakgame");
             return true;
          }

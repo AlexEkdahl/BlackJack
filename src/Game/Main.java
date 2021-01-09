@@ -27,7 +27,9 @@ public class Main {
             dealer.printPlayersCards();
             dealer.checkIfBust();
             dealer.checkHitOrStand();
+            dealer.checkIfBust();
             dealer.dealOneCard();
+            dealer.checkIfBust();
         }
     }
 }
