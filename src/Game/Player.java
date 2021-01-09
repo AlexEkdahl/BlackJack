@@ -1,3 +1,5 @@
+package Game;
+
 public class Player extends Person {
 
    private int moneyInWallet = 100;
