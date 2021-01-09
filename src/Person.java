@@ -16,6 +16,7 @@ public class Person {
    public int getSum() {
       return sum;
    }
+
    public void setSum(int sum) {
       this.sum = sum;
    }
@@ -24,10 +25,10 @@ public class Person {
       this.getNewCard = getNewCard;
    }
 
-public boolean getNewCard(){
-   return this.getNewCard;
+   public boolean getNewCard() {
+      return this.getNewCard;
 
-}
+   }
 
    public void setName(String name) {
       this.name = name;
@@ -45,9 +46,24 @@ public boolean getNewCard(){
       return name;
    }
 
-   public void getOneCard(Card card){
+   public ArrayList<Card> getCardList(){
+      return this.playersCards;
+   }
+
+   // add one card and add it to value
+   public void getOneCard(Card card) {
       this.playersCards.add(card);
       this.sum += card.getValue();
+   }
+
+   //WAIT
+
+   public String showCards(){
+      String returnString = "";
+      for(Card card: playersCards){
+         returnString = returnString + card.toString() + "\n";
+      }
+      return returnString;
    }
 
 }
