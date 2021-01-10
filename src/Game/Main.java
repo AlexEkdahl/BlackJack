@@ -1,6 +1,5 @@
 package Game;
 
-import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -19,33 +18,19 @@ public class Main {
         String wishToContinue = "";
 
         // Here starts the game
-        clearScreen();
         System.out.println(dealer.getName() + " \"Hi im your dealer of the night, whats your name?\"");
         players.add(0, new Player(in.nextLine()));
 
         // first round of the game, before dealer acts everyone must get their two cards
-        // Dont need the creation of a player in the game loop
         while (!(wishToContinue.equals("n"))) {
-            dealer.dealOneCard();
-            dealer.setDealersTurnToAct(false);
-            dealer.dealOneCard();
-            clearScreen();
-
+            dealer.doRoundOne();
             while (!dealer.isAWinner()) {
                 // Players act
                 while (dealer.breakGame()) {
-                    dealer.printPlayersCards();
-                    System.out.println();
-                    dealer.playerCheckHitOrStand();
-                    System.out.println();
-                    dealer.dealOneCard();
+                    dealer.doGameRound();
                 }
-                //Dealer act
-                dealer.printPlayersCards();
-                System.out.println();
-                dealer.playerCheckHitOrStand();
-                System.out.println();
-                dealer.dealOneCard();
+                // Dealer act
+                dealer.doGameRound();
             }
 
             System.out.println("Another game? [Y / N]");
@@ -58,14 +43,4 @@ public class Main {
         }
     }
 
-    public static void clearScreen() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033\143");
-            }
-        } catch (IOException | InterruptedException ex) {
-        }
-    }
 }

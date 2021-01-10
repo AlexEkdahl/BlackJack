@@ -1,5 +1,6 @@
 package Game;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Dealer extends Person {
@@ -21,6 +22,7 @@ public class Dealer extends Person {
 
    // Give everyone at the table a card and removes it from deck
    public void dealOneCard() {
+      checkIfBust();
       for (Person player : this.players) {
 
          // check if player should get a card
@@ -30,16 +32,15 @@ public class Dealer extends Person {
             // To not show dealers second card
             if (player == this && !dealersTurnToAct) {
                System.out.println(player.getName() + " got a card and its hidden");
-               //Because dealer should not be asked any questions until its dealers turn to act
+               // Because dealer should not be asked any questions until its dealers turn to
+               // act
                player.setGetCard(false);
                this.deck.removeOneCard();
                waitMilliSeconds(700);
-               checkIfBust();
             } else {
                System.out.println(player.getName() + " got " + deck.giveOneCard().toString());
                this.deck.removeOneCard();
                waitMilliSeconds(700);
-               checkIfBust();
             }
          }
       }
@@ -56,11 +57,12 @@ public class Dealer extends Person {
 
    // choice of either take a new card or stay
    public void playerCheckHitOrStand() {
+      checkIfBust();
       for (Person player : this.players) {
 
          // Branches of to check if its a object of Player and wants a new card
-         //Player is a user and be asked for input
-         if (player.getClass() == Player.class && player.getCard()) {
+         // Player is a user and be asked for input
+         if (player.getClass() == Player.class && player.getCard() || player.getSum() == 21) {
             System.out.println("\nNew card or stay?" + "[Y / N]");
             String answer = input.nextLine().toLowerCase();
             switch (answer) {
@@ -80,7 +82,7 @@ public class Dealer extends Person {
             }
             // Branches of to check if its a object of Computer
             // This computer will stop if at 18 or above, more risk taking then the dealer
-         } else if (player.getClass() == Computer.class && player.getCard()) {
+         } else if (player.getClass() == Computer.class && player.getCard() || player.getSum() == 21) {
 
             if (player.getSum() >= 18) {
                player.setGetCard(false);
@@ -94,10 +96,10 @@ public class Dealer extends Person {
          }
          // Branches of to check if its a object of dealer
          // In black jack, the dealer draw until 16 and must stop at 17 or above
-         else if (player.getClass() == Dealer.class && player.getCard() && this.isDealersTurnToAct()) {
+         else if (player.getClass() == Dealer.class && player.getCard() && this.isDealersTurnToAct()
+               || player.getSum() == 21) {
             if (player.getSum() >= 17) {
-               player.setGetCard(false);
-               System.out.println(player.getName() + " must stop");
+               this.setGetCard(false);
                waitMilliSeconds(700);
             } else {
                player.setGetCard(true);
@@ -112,11 +114,14 @@ public class Dealer extends Person {
    public void checkIfBust() {
       for (Person player : this.players) {
          if (player.getSum() > 21 && !player.isBust()) {
-            System.out.println(player.getName() + " got bust and is out");
             player.setName(player.getName() + " \tBUST");
             player.setBust(true);
             player.setGetCard(false);
+
+         } else if (player.getSum() == 21) {
+            setGetCard(false);
          }
+
       }
    }
 
@@ -129,12 +134,15 @@ public class Dealer extends Person {
          e.printStackTrace();
       }
    }
-   //TODO Make terminal more pretty
+
+   // TODO Make terminal output more pretty
    // method to break the while loop and chose a winner
    public boolean isAWinner() {
       for (Person player : this.players) {
          // TODO check if another player got 21
+         // and dealer
          if (player.getSum() == 21) {
+            clearScreen();
             if (this.getSum() == 21) {
                System.out.println("Dealer won");
                return true;
@@ -145,6 +153,7 @@ public class Dealer extends Person {
             }
             // If Dealer is bust
          } else if (player == this && player.isBust()) {
+            clearScreen();
             System.out.println("Dealer is bust!");
             // check who is not bust and they will get their money back (aka won)
             for (Person p : this.players) {
@@ -153,22 +162,15 @@ public class Dealer extends Person {
                }
             }
             return true;
-            //TODO
-         } else if(breakGame()) {
-            System.out.println(whoHasHighestScore().getName() + "Won");
-            printAllScores();
+            // TODO noMoreMoves is the same as breakgame
+         } else if (noMoreMoves() && this.dealersTurnToAct) {
+            clearScreen();
+            System.out.println(whoHasHighestScore().getName() + " Won");
+            printPlayersCards();
             return true;
-
          }
       }
       return false;
-   }
-
-   public void printAllPlayersCards() {
-      for (Person player : getPlayers()) {
-         System.out.println("\n" + player.getName());
-         System.out.println(player.showCards());
-      }
    }
 
    // check if all players getCard is set to false
@@ -183,9 +185,22 @@ public class Dealer extends Person {
          }
       }
       // if count equals the amount of player except dealer
-      if (count == this.players.size() - 1) {
+      if (count == this.players.size() - 1 && !this.dealersTurnToAct) {
          this.dealersTurnToAct = true;
          this.setGetCard(true);
+         return true;
+      }
+      return false;
+   }
+
+   public boolean noMoreMoves() {
+      int count = 0;
+      for (Person player : players) {
+         if (player.getCard() == false) {
+            count++;
+         }
+      }
+      if (count == players.size()) {
          return true;
       }
       return false;
@@ -220,6 +235,7 @@ public class Dealer extends Person {
 
    // Get the players highest score excluding the dealer
    public int playersHighestScore() {
+      checkIfBust();
       int highestScore = 0;
       for (Person player : this.players) {
          if (!(player == this)) {
@@ -231,8 +247,9 @@ public class Dealer extends Person {
       return highestScore;
    }
 
-   // Get the player with the highest score
+   // Get the player with the highest score who is not bust
    public Person whoHasHighestScore() {
+      checkIfBust();
       int bestScore = 0;
       int bestIndex = 0;
       for (int i = 0; i < players.size(); i++) {
@@ -243,9 +260,12 @@ public class Dealer extends Person {
       }
       return players.get(bestIndex);
    }
-   // Print players cards and depending if its dealers turn or not, dealers second card
+
+   // Print players cards and depending if its dealers turn or not, dealers second
+   // card
    // is hidden.
    public void printPlayersCards() {
+      checkIfBust();
       for (Person player : getPlayers()) {
          if (!(player == this)) {
             System.out.println("\n" + player.getName());
@@ -259,6 +279,32 @@ public class Dealer extends Person {
                System.out.println("[HIDDEN CARD]");
             }
          }
+      }
+   }
+
+   public void doRoundOne() {
+      dealOneCard();
+      setDealersTurnToAct(false);
+      dealOneCard();
+      clearScreen();
+   }
+
+   public void doGameRound() {
+      printPlayersCards();
+      System.out.println();
+      playerCheckHitOrStand();
+      System.out.println();
+      dealOneCard();
+   }
+
+   public void clearScreen() {
+      try {
+         if (System.getProperty("os.name").contains("Windows")) {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+         } else {
+            System.out.print("\033\143");
+         }
+      } catch (IOException | InterruptedException ex) {
       }
    }
 
