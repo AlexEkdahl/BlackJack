@@ -1,0 +1,6 @@
+Blackjack Rules
+The goal of blackjack is to beat the dealer's hand without going over 21.
+Face cards are worth 10. ...
+Each player starts with two cards, one of the dealer's cards is hidden until the end.
+To 'Hit' is to ask for another card. ...
+If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.

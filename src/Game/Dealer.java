@@ -84,7 +84,6 @@ public class Dealer extends Person {
                player.setGetCard(true);
                System.out.println(player.getName() + " have to continue");
                waitMilliSeconds(500);
-
             }
          }
       }
@@ -93,9 +92,11 @@ public class Dealer extends Person {
    // Bust is when you have more then 21
    public void checkIfBust() {
       for (Person player : this.players) {
-         if (player.getSum() > 21) {
+         if (player.getSum() > 21 && !player.isBust()) {
             System.out.println(player.getName() + " got bust and is out");
+            player.setName(player.getName() + " \tBUST");
             player.setBust(true);
+            player.setGetCard(false);
          }
       }
    }
@@ -115,9 +116,8 @@ public class Dealer extends Person {
          // TODO check if another player got 21
          // and if the dealer got it as well, then dealer win
          if (player.getSum() == 21) {
-
             System.out.println(player.getName() + " won");
-            printPlayersCards();
+            printAllScores();
             return true;
          } else if (player.getClass() == Dealer.class && player.isBust()) {
             System.out.println("Dealer is bust!");
@@ -127,7 +127,7 @@ public class Dealer extends Person {
                   System.out.println(p.getName() + " got their money back");
                }
             }
-            printPlayersCards();
+            printAllScores();
             return true;
          } else if (breakGame()) {
             // TODO Fix this shit with a winner
@@ -149,7 +149,6 @@ public class Dealer extends Person {
    // check if all players getCard is set to false
    // or if they are bust. Return a boolean if that is so
    // if count equals the amount of player then there are no moves left
-
    public boolean breakGame() {
       int count = 0;
       for (Person player : this.players) {
@@ -173,16 +172,24 @@ public class Dealer extends Person {
       this.players.add(person);
    }
 
+
+   //Get the players highest score excluding the dealer 
    public int getHighestScore(){
       int highestScore = 0;
       for(Person player: this.players){
          if (!(player.getClass() == Dealer.class)){
             if (player.getSum() > highestScore){
-               highestScore += player.getSum();
+               highestScore = player.getSum();
             }
          }
       }
       return highestScore;
+   }
+
+   public void printAllScores(){
+      for (Person player: this.players){
+         System.out.println(player.getName() + "\t\tgot:" + player.getSum());
+      }
    }
 
 }

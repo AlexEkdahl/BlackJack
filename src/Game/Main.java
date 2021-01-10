@@ -9,10 +9,12 @@ public class Main {
         ArrayList<Person> players = new ArrayList<>();
         Player player1 = new Player("Alex the Champ");
         Computer player2 = new Computer("Linda");
-        Computer player3 = new Computer("Martin ");
+        Computer player3 = new Computer("Martin");
+        Computer player4 = new Computer("Robin");
         players.add(player1);
         players.add(player2);
         players.add(player3);
+        players.add(player4);
         Dealer dealer = new Dealer("Svarte Petter", players);
 
         //TODO implement methods to handle bets and bidds
@@ -26,11 +28,17 @@ public class Main {
         // Black Jack Game
         while (!dealer.isAWinner()) {
             dealer.printPlayersCards();
+            System.out.println();
             dealer.checkIfBust();
+            System.out.println();
             dealer.checkHitOrStand();
-            dealer.checkIfBust();
+            System.out.println();
             dealer.dealOneCard();
+            System.out.println();
+            dealer.printPlayersCards();
+            System.out.println();
             dealer.checkIfBust();
+            System.out.println();
         }
     }
 }
