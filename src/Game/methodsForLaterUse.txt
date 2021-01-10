@@ -1,0 +1,21 @@
+            // Branches of to check if its a object of dealer
+            // In black jack, the dealer draw until 16 and must stop at 17 or above
+         } else if (player.getClass() == Dealer.class && player.getCard()) {
+            if (player.getSum() >= 16) {
+               player.setGetCard(false);
+               System.out.println(player.getName() + " must stop");
+               waitMilliSeconds(500);
+
+            } else {
+               player.setGetCard(true);
+               System.out.println(player.getName() + " takes a new card");
+               waitMilliSeconds(500);
+            }
+
+            // If dealer has the best score -> this should not be here?
+            else if (player.getClass() == Dealer.class && player.getSum() >= playersHighestScore()) {
+            printAllPlayersCards();
+            System.out.println("Dealer wins");
+
+            //TODO dont know?
+         } 

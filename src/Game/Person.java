@@ -66,4 +66,8 @@ public class Person {
       return returnString;
    }
 
+   public void setNewPlayersCards(){
+      this.playersCards = new ArrayList<>();
+   }
+
 }
